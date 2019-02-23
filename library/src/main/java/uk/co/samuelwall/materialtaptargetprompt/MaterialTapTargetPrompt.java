@@ -186,6 +186,7 @@ public class MaterialTapTargetPrompt
      */
     MaterialTapTargetPrompt(final PromptOptions promptOptions)
     {
+
         final ResourceFinder resourceFinder = promptOptions.getResourceFinder();
         mView = new PromptView(resourceFinder.getContext());
         mView.mPrompt = this;
@@ -269,6 +270,20 @@ public class MaterialTapTargetPrompt
                 }
             }
         };
+
+        button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
+        button.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        button.setText("TANITIMI GEÇ");
+        button.setBackgroundColor(0x99000000);
+        button.setTextColor(0xffffffff);
+        button.setPadding(75, 0, 75, 0);
+
+        linearLayout = new LinearLayout(mView.mPromptOptions.getResourceFinder().getContext());
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ((LinearLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
+        linearLayout.setLayoutParams(params);
     }
 
     /**
@@ -288,21 +303,7 @@ public class MaterialTapTargetPrompt
         {
             cleanUpPrompt(mState);
         }
-        button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
-        button.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        button.setText("TANITIMI GEÇ");
-        button.setBackgroundColor(0x99000000);
-        button.setTextColor(0xffffffff);
-        button.setPadding(75, 0, 75, 0);
-
-        linearLayout = new LinearLayout(mView.mPromptOptions.getResourceFinder().getContext());
-        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ((LinearLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
-        linearLayout.setLayoutParams(params);
         linearLayout.addView(button);
-
         parent.addView(mView);
         parent.addView(linearLayout);
         addGlobalLayoutListener();
