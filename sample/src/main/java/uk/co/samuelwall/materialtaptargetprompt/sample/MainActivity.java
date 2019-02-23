@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity
                 .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                 {
                     @Override
-                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state)
+                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt,
+                                                     int state)
                     {
                         if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED
                                 || state == MaterialTapTargetPrompt.STATE_NON_FOCAL_PRESSED)
@@ -129,14 +130,15 @@ public class MainActivity extends AppCompatActivity
                 .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                 {
                     @Override
-                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state)
+                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt,
+                                                     int state)
                     {
                         if (state == MaterialTapTargetPrompt.STATE_SHOW_FOR_TIMEOUT)
                         {
 
                             Toast.makeText(MainActivity.this,
-                                "Prompt timedout after 7 seconds", Toast.LENGTH_SHORT)
-                                .show();
+                                    "Prompt timedout after 7 seconds", Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                 })
@@ -308,23 +310,31 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(this, CardActivity.class));
     }
 
-    public void showSequence(View view) {
-
-        new MaterialTapTargetSequence()
-            .addPrompt(new MaterialTapTargetPrompt.Builder(MainActivity.this)
-                .setTarget(findViewById(R.id.fab))
-                .setPrimaryText("Step 1")
-                .setSecondaryText("This will show for 4 seconds")
-                .setFocalPadding(R.dimen.dp40)
-                .create(), 4000)
-            .addPrompt(new MaterialTapTargetPrompt.Builder(MainActivity.this)
-                .setTarget(findViewById(R.id.action_search))
-                .setPrimaryText("Step 2")
-                .setSecondaryText("This will show till you press it")
-                .setAnimationInterpolator(new LinearOutSlowInInterpolator())
-                .setFocalPadding(R.dimen.dp40)
-                .setIcon(R.drawable.ic_search))
-            .show();
+    public void showSequence(View view)
+    {
+        final MaterialTapTargetSequence materialTapTargetSequence = new MaterialTapTargetSequence()
+                .addPrompt(new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                        .setTarget(findViewById(R.id.fab))
+                        .setPrimaryText("Step 1")
+                        .setSecondaryText("This will show for 4 seconds")
+                        .setFocalPadding(R.dimen.dp40)
+                        .create(), 4000)
+                .addPrompt(new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                        .setTarget(findViewById(R.id.action_search))
+                        .setPrimaryText("Step 2")
+                        .setSecondaryText("This will show till you press it")
+                        .setAnimationInterpolator(new LinearOutSlowInInterpolator())
+                        .setFocalPadding(R.dimen.dp40)
+                        .setIcon(R.drawable.ic_search))
+                .show();
+        materialTapTargetSequence.addButtonOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                materialTapTargetSequence.dismiss();
+            }
+        });
     }
 
     public void showListActivity(View view)
@@ -349,7 +359,8 @@ public class MainActivity extends AppCompatActivity
                 .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                 {
                     @Override
-                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt, int state)
+                    public void onPromptStateChanged(@NonNull MaterialTapTargetPrompt prompt,
+                                                     int state)
                     {
                         if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
                         {

@@ -21,6 +21,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -36,6 +37,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -170,7 +172,8 @@ public class MaterialTapTargetPrompt
         }
     };
 
-    Button button;
+    private Button button;
+    private LinearLayout linearLayout;
     /**
      * Listener for the view layout changing.
      */
@@ -285,33 +288,47 @@ public class MaterialTapTargetPrompt
         {
             cleanUpPrompt(mState);
         }
-
         button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.END));
-
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("TANITIMI GEÇ");
         button.setBackgroundColor(0x99000000);
         button.setTextColor(0xffffffff);
         button.setPadding(75, 0, 75, 0);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Log.d("MaterailTap", "OnClick");
-                dismiss();
-                finish();
-            }
-        });
 
+        linearLayout = new LinearLayout(mView.mPromptOptions.getResourceFinder().getContext());
+        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ((LinearLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
+        linearLayout.setLayoutParams(params);
+        linearLayout.addView(button);
+
+        parent.addView(linearLayout);
         parent.addView(mView);
-        parent.addView(button);
         addGlobalLayoutListener();
         onPromptStateChanged(STATE_REVEALING);
         prepare();
         startRevealAnimation();
+    }
+
+    public static int convertDpiToPixel(Context context, int dpi)
+    {
+        float pixel = 0;
+        try
+        {
+            Resources r = context.getResources();
+            pixel = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpi, r.getDisplayMetrics());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return (int) pixel;
+    }
+
+    public MaterialTapTargetPrompt addButtonOnClickListener(View.OnClickListener listener)
+    {
+        button.setOnClickListener(listener);
+        return this;
     }
 
     /**
@@ -328,6 +345,7 @@ public class MaterialTapTargetPrompt
     /**
      * Cancel the show for timer if it has been created.
      */
+
     public void cancelShowForTimer()
     {
         mView.removeCallbacks(mTimeoutRunnable);
@@ -515,7 +533,7 @@ public class MaterialTapTargetPrompt
         final ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null)
         {
-            parent.removeView(button);
+            parent.removeView(linearLayout);
             parent.removeView(mView);
         }
         if (isDismissing())

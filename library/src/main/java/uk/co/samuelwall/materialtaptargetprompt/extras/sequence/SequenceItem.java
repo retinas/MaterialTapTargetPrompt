@@ -18,6 +18,7 @@ package uk.co.samuelwall.materialtaptargetprompt.extras.sequence;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,7 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
     /**
      * Lists the state changes that trigger this sequence item to complete.
      */
-    @NonNull
-    final List<Integer> stateChangers = new ArrayList<>();
+    @NonNull final List<Integer> stateChangers = new ArrayList<>();
 
     /**
      * Listener for this sequence item completing.
@@ -61,6 +61,7 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
     /**
      * Add a state that will trigger the sequence to move on.
      *
+     * @param state The state that triggers the sequence to move on.
      * @see MaterialTapTargetPrompt#STATE_REVEALING
      * @see MaterialTapTargetPrompt#STATE_REVEALED
      * @see MaterialTapTargetPrompt#STATE_FOCAL_PRESSED
@@ -69,8 +70,6 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
      * @see MaterialTapTargetPrompt#STATE_NON_FOCAL_PRESSED
      * @see MaterialTapTargetPrompt#STATE_DISMISSING
      * @see MaterialTapTargetPrompt#STATE_DISMISSED
-     *
-     * @param state The state that triggers the sequence to move on.
      */
     public void addStateChanger(final int state)
     {
@@ -80,6 +79,7 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
     /**
      * Remove a specific state changer.
      *
+     * @param state The state to remove.
      * @see MaterialTapTargetPrompt#STATE_REVEALING
      * @see MaterialTapTargetPrompt#STATE_REVEALED
      * @see MaterialTapTargetPrompt#STATE_FOCAL_PRESSED
@@ -88,8 +88,6 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
      * @see MaterialTapTargetPrompt#STATE_NON_FOCAL_PRESSED
      * @see MaterialTapTargetPrompt#STATE_DISMISSING
      * @see MaterialTapTargetPrompt#STATE_DISMISSED
-     *
-     * @param state The state to remove.
      */
     public void removeStateChanger(final int state)
     {
@@ -109,7 +107,8 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
      *
      * @param listener The item finish listener.
      */
-    public void setSequenceListener(@Nullable final MaterialTapTargetSequence.SequenceCompleteListener listener)
+    public void setSequenceListener(
+            @Nullable final MaterialTapTargetSequence.SequenceCompleteListener listener)
     {
         this.sequenceListener = listener;
     }
@@ -184,8 +183,18 @@ public class SequenceItem implements MaterialTapTargetPrompt.PromptStateChangeLi
         }
     }
 
+    public void addButtonOnClickListener(View.OnClickListener listener)
+    {
+        final MaterialTapTargetPrompt prompt = this.sequenceState.getPrompt();
+        if (prompt != null)
+        {
+            prompt.addButtonOnClickListener(listener);
+        }
+    }
+
     /**
-     * Emits the {@link MaterialTapTargetSequence.SequenceCompleteListener#onSequenceComplete()} event if the listener
+     * Emits the {@link MaterialTapTargetSequence.SequenceCompleteListener#onSequenceComplete()}
+     * event if the listener
      * is set.
      */
     protected void onItemComplete()

@@ -18,6 +18,7 @@ package uk.co.samuelwall.materialtaptargetprompt;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,10 +84,12 @@ public class MaterialTapTargetSequence
 
     /**
      * Set the listener to listen with the action to call when the sequence ends
+     *
      * @param listener the listener with the action to execute
      */
     @NonNull
-    public MaterialTapTargetSequence setSequenceCompleteListener(@Nullable SequenceCompleteListener listener)
+    public MaterialTapTargetSequence setSequenceCompleteListener(
+            @Nullable SequenceCompleteListener listener)
     {
         mOnCompleteListener = listener;
         return this;
@@ -107,7 +110,7 @@ public class MaterialTapTargetSequence
     /**
      * Add a show for time prompt to the end of the sequence.
      *
-     * @param prompt The prompt to add.
+     * @param prompt       The prompt to add.
      * @param milliseconds The number of milliseconds to show the prompt for.
      * @return This.
      */
@@ -136,7 +139,7 @@ public class MaterialTapTargetSequence
      * Add a show for time prompt to the end of the sequence.
      *
      * @param promptOptions The prompt to add.
-     * @param milliseconds The number of milliseconds to show the prompt for.
+     * @param milliseconds  The number of milliseconds to show the prompt for.
      * @return This.
      */
     @NonNull
@@ -235,7 +238,8 @@ public class MaterialTapTargetSequence
     }
 
     /**
-     * Removes the currently displayed prompt in the sequence from view using the finish action and stops the sequence
+     * Removes the currently displayed prompt in the sequence from view using the finish action and
+     * stops the sequence
      * from continuing.
      *
      * @return This.
@@ -258,7 +262,8 @@ public class MaterialTapTargetSequence
     }
 
     /**
-     * Removes the currently displayed prompt in the sequence from view using the dismiss action and stops the sequence
+     * Removes the currently displayed prompt in the sequence from view using the dismiss action and
+     * stops the sequence
      * from continuing.
      *
      * @return This.
@@ -291,6 +296,16 @@ public class MaterialTapTargetSequence
     {
         this.dismiss();
         this.show(index);
+        return this;
+    }
+
+    public MaterialTapTargetSequence addButtonOnClickListener(View.OnClickListener listener)
+    {
+        if (this.nextPromptIndex > -1 && this.nextPromptIndex < this.items.size())
+        {
+            final SequenceItem sequenceItem = this.items.get(nextPromptIndex);
+            sequenceItem.addButtonOnClickListener(listener);
+        }
         return this;
     }
 
