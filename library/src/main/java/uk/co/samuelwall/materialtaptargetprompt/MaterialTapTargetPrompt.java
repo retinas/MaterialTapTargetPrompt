@@ -35,6 +35,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,6 +45,8 @@ import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import uk.co.samuelwall.materialtaptargetprompt.extras.PromptOptions;
 
@@ -166,6 +170,7 @@ public class MaterialTapTargetPrompt
         }
     };
 
+    Button button;
     /**
      * Listener for the view layout changing.
      */
@@ -281,7 +286,28 @@ public class MaterialTapTargetPrompt
             cleanUpPrompt(mState);
         }
 
+        button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
+        button.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.END));
+
+        button.setText("TANITIMI GEÇ");
+        button.setBackgroundColor(0x99000000);
+        button.setTextColor(0xffffffff);
+        button.setPadding(75, 0, 75, 0);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d("MaterailTap", "OnClick");
+                dismiss();
+                finish();
+            }
+        });
+
         parent.addView(mView);
+        parent.addView(button);
         addGlobalLayoutListener();
         onPromptStateChanged(STATE_REVEALING);
         prepare();
@@ -489,6 +515,7 @@ public class MaterialTapTargetPrompt
         final ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null)
         {
+            parent.removeView(button);
             parent.removeView(mView);
         }
         if (isDismissing())
@@ -794,7 +821,8 @@ public class MaterialTapTargetPrompt
             setAccessibilityDelegate(new AccessibilityDelegate());
             mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-            if (mAccessibilityManager.isEnabled()) {
+            if (mAccessibilityManager.isEnabled())
+            {
                 setClickable(true);
             }
         }
@@ -856,19 +884,28 @@ public class MaterialTapTargetPrompt
         }
 
         @Override
-        public boolean onHoverEvent(MotionEvent event) {
-            if (mAccessibilityManager.isTouchExplorationEnabled() && event.getPointerCount() == 1) {
+        public boolean onHoverEvent(MotionEvent event)
+        {
+            if (mAccessibilityManager.isTouchExplorationEnabled() && event.getPointerCount() == 1)
+            {
                 final int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_HOVER_ENTER: {
+                switch (action)
+                {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                    {
                         event.setAction(MotionEvent.ACTION_DOWN);
-                    } break;
-                    case MotionEvent.ACTION_HOVER_MOVE: {
+                    }
+                    break;
+                    case MotionEvent.ACTION_HOVER_MOVE:
+                    {
                         event.setAction(MotionEvent.ACTION_MOVE);
-                    } break;
-                    case MotionEvent.ACTION_HOVER_EXIT: {
+                    }
+                    break;
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                    {
                         event.setAction(MotionEvent.ACTION_UP);
-                    } break;
+                    }
+                    break;
                 }
                 return onTouchEvent(event);
             }
@@ -974,7 +1011,8 @@ public class MaterialTapTargetPrompt
             void onBackButtonPressed();
         }
 
-        class AccessibilityDelegate extends View.AccessibilityDelegate {
+        class AccessibilityDelegate extends View.AccessibilityDelegate
+        {
 
             @Override
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info)
