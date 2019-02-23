@@ -304,7 +304,11 @@ public class MaterialTapTargetSequence
         if (this.nextPromptIndex > -1 && this.nextPromptIndex < this.items.size())
         {
             final SequenceItem sequenceItem = this.items.get(nextPromptIndex);
-            sequenceItem.addButtonOnClickListener(listener);
+            for (int i = 0; i < items.size(); i++)
+            {
+                items.get(i).addButtonOnClickListener(listener);
+            }
+//            sequenceItem.addButtonOnClickListener(listener);
         }
         return this;
     }
