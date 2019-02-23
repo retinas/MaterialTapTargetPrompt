@@ -303,8 +303,8 @@ public class MaterialTapTargetPrompt
         linearLayout.setLayoutParams(params);
         linearLayout.addView(button);
 
-        parent.addView(linearLayout);
         parent.addView(mView);
+        parent.addView(linearLayout);
         addGlobalLayoutListener();
         onPromptStateChanged(STATE_REVEALING);
         prepare();
