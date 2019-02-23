@@ -36,9 +36,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +47,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import uk.co.samuelwall.materialtaptargetprompt.extras.PromptOptions;
 
@@ -173,7 +172,7 @@ public class MaterialTapTargetPrompt
     };
 
     private Button button;
-    private LinearLayout linearLayout;
+    private RelativeLayout relativeLayout;
     /**
      * Listener for the view layout changing.
      */
@@ -270,20 +269,18 @@ public class MaterialTapTargetPrompt
                 }
             }
         };
-
         button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
-        button.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        button.setLayoutParams(llParams);
         button.setText("TANITIMI GEÇ");
         button.setBackgroundColor(0x99000000);
         button.setTextColor(0xffffffff);
         button.setPadding(75, 0, 75, 0);
-
-        linearLayout = new LinearLayout(mView.mPromptOptions.getResourceFinder().getContext());
-        ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ((LinearLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
-        linearLayout.setLayoutParams(params);
+        llParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        relativeLayout = new RelativeLayout(mView.mPromptOptions.getResourceFinder().getContext());
+        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        ((RelativeLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
+        relativeLayout.setLayoutParams(params);
     }
 
     /**
@@ -303,9 +300,9 @@ public class MaterialTapTargetPrompt
         {
             cleanUpPrompt(mState);
         }
-        linearLayout.addView(button);
+        relativeLayout.addView(button);
         parent.addView(mView);
-        parent.addView(linearLayout);
+        parent.addView(relativeLayout);
         addGlobalLayoutListener();
         onPromptStateChanged(STATE_REVEALING);
         prepare();
@@ -534,7 +531,7 @@ public class MaterialTapTargetPrompt
         final ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null)
         {
-            parent.removeView(linearLayout);
+            parent.removeView(relativeLayout);
             parent.removeView(mView);
         }
         if (isDismissing())
