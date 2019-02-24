@@ -48,6 +48,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import uk.co.samuelwall.materialtaptargetprompt.extras.PromptOptions;
 
@@ -171,7 +172,7 @@ public class MaterialTapTargetPrompt
         }
     };
 
-    private Button button;
+    private TextView button;
     private RelativeLayout relativeLayout;
     /**
      * Listener for the view layout changing.
@@ -269,17 +270,17 @@ public class MaterialTapTargetPrompt
                 }
             }
         };
-        button = new Button(mView.mPromptOptions.getResourceFinder().getContext());
+        button = new TextView(mView.mPromptOptions.getResourceFinder().getContext());
         RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         button.setLayoutParams(llParams);
         button.setText("TANITIMI GEÇ");
-        button.setBackgroundColor(0x99000000);
+        button.setBackgroundColor(0xFF000000);
         button.setTextColor(0xffffffff);
-        button.setPadding(75, 0, 75, 0);
+        button.setPadding(75, 25, 75, 25);
         llParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         relativeLayout = new RelativeLayout(mView.mPromptOptions.getResourceFinder().getContext());
         ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ((RelativeLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 80), 0, 0);
+        ((RelativeLayout.LayoutParams) params).setMargins(0, convertDpiToPixel(mView.mPromptOptions.getResourceFinder().getContext(), 24), 0, 0);
         relativeLayout.setLayoutParams(params);
     }
 
