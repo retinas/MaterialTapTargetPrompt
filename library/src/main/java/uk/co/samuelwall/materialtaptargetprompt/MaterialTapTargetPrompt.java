@@ -272,7 +272,7 @@ public class MaterialTapTargetPrompt
         };
         button = new TextView(mView.mPromptOptions.getResourceFinder().getContext());
         RelativeLayout.LayoutParams llParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,25,0,0);
+        llParams.setMargins(0,25,0,0);
         button.setLayoutParams(llParams);
         button.setText("TANITIMI GEÇ");
         button.setBackgroundColor(0xFF000000);
